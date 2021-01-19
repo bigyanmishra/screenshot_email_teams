@@ -8,7 +8,7 @@ There are many such BI apps & biz use-cases with similar requirement. But here, 
 To help achieve this, we have written a **3 – part**, **UI-tool-and-platform-independent** Python script, which can: **1) Take screenshots**, **2) Send an email with inline image & PDF attachment**, & **3) Send a customized message on MSFT Teams too**. This can be added to our dashboard data refresh schedule workflow.
 
 ## 3. Considerations
-1. Script was run on our local environments (as of JAN - 18 - 2021) & we need to test if this can be executed on our customer servers
+1. Script was run on our local environments (as of JAN - 18 - 2021) & we need to test if this can be executed on our customer's servers
 1. With no access to customer's SMTP server details, we are currently routing emails via a *secured* Amazon’s Simple Email Service (SES) - SMTP
    1. MSTR Admins can help update this
 1.	Email rendering on mobile devices needs some more configs :neutral_face:
