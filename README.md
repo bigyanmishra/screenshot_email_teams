@@ -56,4 +56,4 @@ We do not want browser (horizontal) bar, menu bar or any other header(s)/footer(
 1. A webhook can be configured on a Teams' Channel from [Get a connector webhook URL for a Microsoft 365 Group](https://docs.microsoft.com/en-us/outlook/actionable-messages/send-via-connectors#creating-messages-through-office-365-connectors-in-microsoft-teams)
 
 ## 6. Conclusion
-This code has a huge potential for optimization & we look forward your thoughts & suggestions. :bow:
+Though this code works for now, it has a huge potential for optimization & security. And, we look forward your thoughts & suggestions. :bow:
