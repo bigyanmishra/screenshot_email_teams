@@ -25,7 +25,7 @@ import pymsteams
 print("Initiating screenshot sequence... now...\n")
 
 # URL to open exact dashboard (please pass &uid &pwd in the URL, not so secured)
-mstr_conn = "https://bireporting-dev.vrtx.com:443/MicroStrategyDev/servlet/mstrWeb?evt=2048001&src=mstrWeb.2048001&documentID=777290C44E8AC928EB6363B4FF080986&currentViewMedia=1&visMode=0&Server=AWS1DMSTRL01&Project=Commercial%20Data%20Warehouse%20-%20Dev&Port=0&share=1&uid=XXXX&pwd=XXXX"
+mstr_conn = "https://XXXX/MicroStrategyXXX/servlet/mstrWeb?evt=2048001&src=mstrWeb.2048001&documentID=XXXX&currentViewMedia=1&visMode=0&Server=XXXX&Port=0&share=1&uid=XXXX&pwd=XXXX"
 print("MicroStrategy Connection established... please wait... for 10 seconds")
 
 options = ChromeOptions()
@@ -57,7 +57,7 @@ time.sleep(2)
 
 # print("Now copying your PNG files to I - Server location")
 # source_dir = fileDir
-# dest_dir = "C:\\Users\\mishrab\\XXXX"
+# dest_dir = "C:\\Users\\XXXX\\XXXX"
 #
 # files = glob.iglob(os.path.join(source_dir, "*.png"))
 # print (files)
@@ -81,13 +81,13 @@ print("Taking screenshot script ends here...")
 ##########################################################
 
 # "From" address. This address must be verified.
-SENDER = 'bigyan.s.mishra@outlook.com'
-SENDERNAME = 'Bigyan Mishra'
+SENDER = 'XXXX@example.com'
+SENDERNAME = 'XXXX'
 
 # "To" address. This address must be verified.
-RECIPIENT  = 'Bigyan_Mishra@vrtx.com'
+RECIPIENT  = 'XXXX@examplecustomer.com'
 
-# Replace with VRTX's SMTP details
+# Replace with Customer's SMTP details
 # Replace smtp_username with your Amazon SES SMTP user name.
 USERNAME_SMTP = "AKIAR3ZXXXXXX"
 
@@ -95,15 +95,15 @@ USERNAME_SMTP = "AKIAR3ZXXXXXX"
 PASSWORD_SMTP = "XXXX"
 
 # Amazon SES endpoint in the appropriate AWS region.
-HOST = "email-smtp.us-east-2.amazonaws.com"
+HOST = "email-smtp.us-XXXX.amazonaws.com"
 PORT = 587
 
 # The subject line of the email.
-SUBJECT = 'Product Summary Report'
+SUBJECT = 'Sample Name Dashboard'
 
 # The email body for recipients with non-HTML email clients (if user happen to receive only plain text emails).
 BODY_TEXT = ("All,\r\n"
-             "Attached is the Product Summary for the week ending last Friday. As always, let us know if you have any questions."
+             "Attached is the Sample Dashboard for the week ending last Friday. As always, let us know if you have any questions."
             )
 
 # Encode your image for inline rendering & to avoid SPAM. Important!
@@ -116,14 +116,14 @@ BODY_HTML = f"""\
 <p style="font-size:100%;font-family:Trebuchet MS;">
 All,
 <br>
-Attached is the Product Summary for the week ending last Friday. As always, let us know if you have any questions.
+Attached is the Sample Dashboard for the week ending last Friday. As always, let us know if you have any questions.
 </p>
 <img src="data:image/png;base64,{encoded}">
 <br>
 <p style="font-size:100%;font-family:Trebuchet MS;">
 Thanks & Regards,
 <br>
-Bigyan.
+XXXX.
 </p>
 </body>
 </html>
@@ -141,7 +141,7 @@ part1 = MIMEText(BODY_TEXT, 'plain')
 part2 = MIMEText(BODY_HTML, 'html')
 
 # Open PDF file in binary mode
-filename = "Product_Summary.pdf"
+filename = "Sample_Dashboard.pdf"
 
 # We assume that the file is in the directory where you run your Python script from
 with open(filename, "rb") as attachment:
@@ -189,7 +189,7 @@ else:
 # myTeamsMessage = pymsteams.connectorcard("https://outlook.office.com/webhook/XXXX/IncomingWebhook/XX/XXXX")
 #
 # # Add text to the message.
-# myTeamsMessage.text("All, Attached is the Product Summary for the week ending last Friday. As always, let us know if you have any questions.")
+# myTeamsMessage.text("All, Attached is the Sample Dashboard for the week ending last Friday. As always, let us know if you have any questions.")
 #
 # myMessageSection = pymsteams.cardsection()
 # myMessageSection.activityImage("http://i.imgur.com/c4jt321l.png")
