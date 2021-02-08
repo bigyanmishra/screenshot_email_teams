@@ -1,6 +1,12 @@
-# import packages for taking screenshot
-from selenium import webdriver
-from selenium.webdriver import ChromeOptions
+# import packages for taking screenshot from PDF
+from pdf2image import convert_from_path
+
+# import packages for cropping screenshot
+from PIL import Image
+
+# import packages for taking screenshot from web
+# from selenium import webdriver
+# from selenium.webdriver import ChromeOptions
 import time
 
 # import packages to move your PNG files
@@ -16,65 +22,106 @@ from email.mime.text import MIMEText
 import base64
 
 # import packages for sending messages on MSFT Teams
-import pymsteams
+# import pymsteams
 
 ##########################################################
-############## PART - I - TAKING SCREENSHOT ##############
+########### PART - I.a - TAKING PDF SCREENSHOT ###########
 ##########################################################
-
 print("Initiating screenshot sequence... now...\n")
 
-# URL to open exact dashboard (please pass &uid &pwd in the URL, not so secured)
-mstr_conn = "https://XXXX/MicroStrategyXXX/servlet/mstrWeb?evt=2048001&src=mstrWeb.2048001&documentID=XXXX&currentViewMedia=1&visMode=0&Server=XXXX&Port=0&share=1&uid=XXXX&pwd=XXXX"
-print("MicroStrategy Connection established... please wait... for 10 seconds")
+input_path = os.path.dirname(os.path.abspath(__file__))
+# output_path = os.path.dirname(os.path.abspath(__file__))
+print(input_path)
+# print(output_path)
+pdfname = input_path+"\\Sample_Dashboard.pdf"
 
-options = ChromeOptions()
-options.headless = True
+# convert all PDF pages to JPEGs
+# images = convert_from_path(pdfname, 500)
+# i = 1
+# len=len(images)
+# print("Number of pages in PDF = "+str(len))
+# for image in images:
+#     image.save('mstr' + str(i) + '.png', 'PNG')
+#     i = i + 1
 
-# (width x height) This is critical to avoid horizontal & vertical scrolls
-options.add_argument('window-size=1653x1500')
+# convert only page 1 of PDF to JPEG
+images = convert_from_path(pdfname, 500, single_file=True)
+images[0].save('mstr1.png', 'PNG')
 
-driver = webdriver.Chrome(options=options)
-driver.get(mstr_conn)
+print("Screenshot taken and is saved as mstr1.png at", input_path)
 
-time.sleep(10)
-print("Accessing the dashboard now...")
+# crop image for email embedding
+input_image = Image.open(input_path+"\\mstr1.png", "r")
 
-fileDir = os.path.dirname(os.path.abspath(__file__))
+crop_box = (0, 0, 7900, 7900)
+output_image_1 = input_image.crop((crop_box))
 
-S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
-driver.set_window_size(S('Width'), S('Height'))
+# resize the image
+newsize = (1000, 1000)
+output_image = output_image_1.resize(newsize)
+output_image.save(input_path+"\\mstr.png", quality=100)
 
-# Select the div class id, you want to include in your screenshot
-driver.find_element_by_id('mstr55').screenshot('mstr.png')
-print("Code has now taken the full page screenshot...")
+print("Screenshot cropped and is saved as mstr.png at", input_path)
 
 time.sleep(2)
 
-print("Screenshot taken and is saved as mstr.png at", fileDir)
+##########################################################
+########### PART - I.b - TAKING WEB SCREENSHOT ###########
+##########################################################
 
-time.sleep(2)
-
-# print("Now copying your PNG files to I - Server location")
-# source_dir = fileDir
-# dest_dir = "C:\\Users\\XXXX\\XXXX"
+# print("Initiating screenshot sequence... now...\n")
 #
-# files = glob.iglob(os.path.join(source_dir, "*.png"))
-# print (files)
-# for file in files:
-#     if os.path.isfile(file):
-#         shutil.copy2(file, dest_dir)
-# print("Screenshot copied as mstr.png at", dest_dir)
-
-# # this code below will delete PNG files from source_dir
-# test = os.listdir(dest_dir)
-# for item in test:
-#     if item.endswith(".png"):
-#         os.remove(item)
-
-driver.quit()
-# driver.close()
-print("Taking screenshot script ends here...")
+# # URL to open exact dashboard (please pass &uid &pwd in the URL, not so secured)
+# mstr_conn = "https://XXXX/MicroStrategyXXX/servlet/mstrWeb?evt=2048001&src=mstrWeb.2048001&documentID=XXXX&currentViewMedia=1&visMode=0&Server=XXXX&Port=0&share=1&uid=XXXX&pwd=XXXX"
+# print("MicroStrategy Connection established... please wait... for 10 seconds")
+#
+# options = ChromeOptions()
+# options.headless = True
+#
+# # (width x height) This is critical to avoid horizontal & vertical scrolls
+# options.add_argument('window-size=1653x1500')
+#
+# driver = webdriver.Chrome(options=options)
+# driver.get(mstr_conn)
+#
+# time.sleep(10)
+# print("Accessing the dashboard now...")
+#
+# fileDir = os.path.dirname(os.path.abspath(__file__))
+#
+# S = lambda X: driver.execute_script('return document.body.parentNode.scroll' + X)
+# driver.set_window_size(S('Width'), S('Height'))
+#
+# # Select the div class id, you want to include in your screenshot
+# driver.find_element_by_id('mstr55').screenshot('mstr.png')
+# print("Code has now taken the full page screenshot...")
+#
+# time.sleep(2)
+#
+# print("Screenshot taken and is saved as mstr.png at", fileDir)
+#
+# time.sleep(2)
+#
+# # print("Now copying your PNG files to I - Server location")
+# # source_dir = fileDir
+# # dest_dir = "C:\\Users\\XXXX\\XXXX"
+# #
+# # files = glob.iglob(os.path.join(source_dir, "*.png"))
+# # print (files)
+# # for file in files:
+# #     if os.path.isfile(file):
+# #         shutil.copy2(file, dest_dir)
+# # print("Screenshot copied as mstr.png at", dest_dir)
+#
+# # # this code below will delete PNG files from source_dir
+# # test = os.listdir(dest_dir)
+# # for item in test:
+# #     if item.endswith(".png"):
+# #         os.remove(item)
+#
+# driver.quit()
+# # driver.close()
+# print("Taking screenshot script ends here...")
 
 ##########################################################
 ############## PART - II - SENDING EMAIL #################
@@ -85,7 +132,8 @@ SENDER = 'XXXX@example.com'
 SENDERNAME = 'XXXX'
 
 # "To" address. This address must be verified.
-RECIPIENT  = 'XXXX@examplecustomer.com'
+# Notice the space between ", "
+RECIPIENT  = ['XXX@customer.com', 'XXX@customer.com', 'XXX@customer.com', 'XXX@customer.com']
 
 # Replace with Customer's SMTP details
 # Replace smtp_username with your Amazon SES SMTP user name.
@@ -133,7 +181,7 @@ XXXX.
 msg = MIMEMultipart('alternative')
 msg['Subject'] = SUBJECT
 msg['From'] = email.utils.formataddr((SENDERNAME, SENDER))
-msg['To'] = RECIPIENT
+msg['To'] = ", ".join(RECIPIENT)
 
 
 # Record the MIME types of both parts - text/plain and text/html.
