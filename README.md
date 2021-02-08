@@ -15,7 +15,7 @@ To help achieve this, we have written a **3 – part**, **UI-tool-and-platform-i
 1. Message to MSFT – Teams require configuring an incoming webhook
 
 ## 4. Workflow
-![Simplified Workflow](/images/workflow.JPG)
+![Simplified Workflow](/images/workflow_1.JPG)
 
 ## 5. Code Walkthrough
 ### Part I.a. - Taking Screenshot from PDF
