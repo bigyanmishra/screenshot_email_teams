@@ -18,7 +18,11 @@ To help achieve this, we have written a **3 – part**, **UI-tool-and-platform-i
 ![Simplified Workflow](/images/workflow.JPG)
 
 ## 5. Code Walkthrough
-### Part I - Taking Screenshot
+### Part I.a. - Taking Screenshot from PDF
+1. This part referes the *pdf2image* package to covert PDF to a PIL (Python Imaging Library) object. [Package for pdf2image](https://pypi.org/project/pdf2image/)
+1. `# Comments` within the code will help explain script's flow for converting PDF to JPEG/PNG, cropping & resizing
+
+### Part I.b. - Taking Screenshot from Web
 1. This part refers the *selenium* package to automate web browser interaction from Python. [Python bindings for Selenium](https://pypi.org/project/selenium/)
 1. Selenium requires a driver to interface with the chosen browser. In our instance, for Chrome, we have downloaded the [driver](https://sites.google.com/a/chromium.org/chromedriver/downloads) and saved it at a location where we have installed Python on local/server machine (*this step is critical*)
    1. Making sure it is in your *PATH*, e. g., place it in */usr/bin or /usr/local/bin*
