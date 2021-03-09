@@ -29,41 +29,40 @@ import base64
 ##########################################################
 print("Initiating screenshot sequence... now...\n")
 
-input_path = os.path.dirname(os.path.abspath(__file__))
-# output_path = os.path.dirname(os.path.abspath(__file__))
-print(input_path)
-# print(output_path)
-pdfname = input_path+"\\Sample_Dashboard.pdf"
+script_path = os.path.dirname(os.path.abspath(__file__))
+print("Your Python script is placed at: ", script_path)
 
-# convert all PDF pages to JPEGs
-# images = convert_from_path(pdfname, 500)
-# i = 1
-# len=len(images)
-# print("Number of pages in PDF = "+str(len))
-# for image in images:
-#     image.save('mstr' + str(i) + '.png', 'PNG')
-#     i = i + 1
+parentDir = os.path.dirname(script_path)
+pdf_path = os.path.join(parentDir, "XXXX")
+print("Your PDF is placed in: ", pdf_path)
+pdf_to_read = os.path.join(pdf_path, "XXXX.pdf")
+# print("Name of your PDF is: ", pdf_to_read)
+
+image_output_path = os.path.join(parentDir, "XXXX")
+# print("Your screenshot will be saved at: ", image_output_path)
 
 # convert only page 1 of PDF to JPEG
-images = convert_from_path(pdfname, 500, single_file=True)
-images[0].save('mstr1.png', 'PNG')
+images = convert_from_path(pdf_to_read, 500, single_file=True, output_folder=image_output_path, fmt="PNG", output_file="XXXX")
 
-print("Screenshot taken and is saved as mstr1.png at", input_path)
-
-# crop image for email embedding
-input_image = Image.open(input_path+"\\mstr1.png", "r")
-
-crop_box = (0, 0, 7900, 7900)
-output_image_1 = input_image.crop((crop_box))
-
-# resize the image
-newsize = (1000, 1000)
-output_image = output_image_1.resize(newsize)
-output_image.save(input_path+"\\mstr.png", quality=100)
-
-print("Screenshot cropped and is saved as mstr.png at", input_path)
+print("Screenshot taken and is saved at: ", image_output_path)
 
 time.sleep(2)
+
+##########################################################
+########### PART - I.a.1 - CROPPING SCREENSHOT #############
+##########################################################
+
+image_to_crop = Image.open(os.path.join(image_output_path, "XXXX.png"), "r")
+
+# (https://pillow.readthedocs.io/en/stable/handbook/concepts.html#coordinate-system)
+crop_box = (200, 300, 7900, 7800) #(left, upper, right, lower)
+
+output_image_intermediate = image_to_crop.crop((crop_box))
+newsize = (1680, 1680)
+output_image = output_image_intermediate.resize(newsize)
+output_image.save(os.path.join(image_output_path, "XXXX.png"), quality=100)
+
+print("Screenshot is cropped and saved at: ", image_output_path)
 
 ##########################################################
 ########### PART - I.b - TAKING WEB SCREENSHOT ###########
@@ -93,12 +92,12 @@ time.sleep(2)
 # driver.set_window_size(S('Width'), S('Height'))
 #
 # # Select the div class id, you want to include in your screenshot
-# driver.find_element_by_id('mstr55').screenshot('mstr.png')
+# driver.find_element_by_id('mstr55').screenshot('XXXX.png')
 # print("Code has now taken the full page screenshot...")
 #
 # time.sleep(2)
 #
-# print("Screenshot taken and is saved as mstr.png at", fileDir)
+# print("Screenshot taken and is saved as XXXX.png at", fileDir)
 #
 # time.sleep(2)
 #
@@ -127,35 +126,44 @@ time.sleep(2)
 ############## PART - II - SENDING EMAIL #################
 ##########################################################
 
-# "From" address. This address must be verified.
-SENDER = 'XXXX@example.com'
-SENDERNAME = 'XXXX'
+image_to_read = os.path.join(image_output_path, "XXXX.png")
 
-# "To" address. This address must be verified.
-# Notice the space between ", "
-RECIPIENT  = ['XXX@customer.com', 'XXX@customer.com', 'XXX@customer.com', 'XXX@customer.com']
+date_path = os.path.join(parentDir, "XXXX")
+date_to_read_inter = open(os.path.join(date_path, "date.txt"), "r").readlines()
+date_to_read = date_to_read_inter[1]
 
-# Replace with Customer's SMTP details
+
+# "From" address. This address must be verified (for AWS SES).
+SENDER = 'MXXXX@XXXX.com'
+SENDERNAME = 'MicroStrategy Distribution Service'
+
+# "To" address. These address must be verified (for AWS SES).
+RECIPIENT  = ['xxxx@xxxx.com', 'xxxx@xxxx.com', 'xxxx@xxxx.com', 'xxxx@xxxx.com']
+
+# Replace with client's SMTP details
 # Replace smtp_username with your Amazon SES SMTP user name.
-USERNAME_SMTP = "AKIAR3ZXXXXXX"
+USERNAME_SMTP = "AKIAR3ZTJSLKH4GRXXXX"
 
 # Replace smtp_password with your Amazon SES SMTP password.
-PASSWORD_SMTP = "XXXX"
+PASSWORD_SMTP = "BC4HL1goasn0N7+FLTEYDkdcQehCdf7mWhOP/R1kXXXX"
 
 # Amazon SES endpoint in the appropriate AWS region.
-HOST = "email-smtp.us-XXXX.amazonaws.com"
-PORT = 587
+# HOST = "email-smtp.us-xxxx-2.amazonaws.com"
+# PORT = 587
+HOST = "xxxx.xxxx.com"
+PORT = 25
 
 # The subject line of the email.
-SUBJECT = 'Sample Name Dashboard'
+SUBJECT = 'XXXX'
 
 # The email body for recipients with non-HTML email clients (if user happen to receive only plain text emails).
 BODY_TEXT = ("All,\r\n"
-             "Attached is the Sample Dashboard for the week ending last Friday. As always, let us know if you have any questions."
+             "\n"
+             "Attached is the XXXX report for the week ending last Friday. As always, let us know if you have any questions."
             )
 
 # Encode your image for inline rendering & to avoid SPAM. Important!
-encoded = base64.b64encode(open("mstr.png", "rb").read()).decode()
+encoded = base64.b64encode(open(image_to_read, "rb").read()).decode()
 
 # The HTML body of the email.
 BODY_HTML = f"""\
@@ -164,15 +172,21 @@ BODY_HTML = f"""\
 <p style="font-size:100%;font-family:Trebuchet MS;">
 All,
 <br>
-Attached is the Sample Dashboard for the week ending last Friday. As always, let us know if you have any questions.
+<br>
+Attached is the XXXX report for the week ending: <span>{date_to_read:}</span>. As always, let us know if you have any questions.
 </p>
 <img src="data:image/png;base64,{encoded}">
 <br>
 <p style="font-size:100%;font-family:Trebuchet MS;">
 Thanks & Regards,
 <br>
-XXXX.
+XXXX Team
 </p>
+<br>
+<p style="font-size:100%;font-family:Trebuchet MS;">
+<i>Please do not reply to this email. Mailbox MicroStrategyDS@XXXX.com is not monitored</i>
+</p>
+
 </body>
 </html>
 """
@@ -189,10 +203,10 @@ part1 = MIMEText(BODY_TEXT, 'plain')
 part2 = MIMEText(BODY_HTML, 'html')
 
 # Open PDF file in binary mode
-filename = "Sample_Dashboard.pdf"
+filename = "XXXX.pdf"
 
 # We assume that the file is in the directory where you run your Python script from
-with open(filename, "rb") as attachment:
+with open(pdf_to_read, "rb") as attachment:
     # The content type "application/octet-stream" means that a MIME attachment is a binary file
     part3 = MIMEBase("application", "octet-stream")
     part3.set_payload(attachment.read())
@@ -220,7 +234,7 @@ try:
     server.starttls()
     # stmplib docs recommend calling ehlo() before & after starttls()
     server.ehlo()
-    server.login(USERNAME_SMTP, PASSWORD_SMTP)
+    # server.login(USERNAME_SMTP, PASSWORD_SMTP)
     server.sendmail(SENDER, RECIPIENT, msg.as_string())
     server.close()
 # Display an error message if something goes wrong.
@@ -247,4 +261,4 @@ else:
 # # send the message.
 # myTeamsMessage.send()
 
-print("Message sent! Messaging script ends here...")
+# print("Message sent! Messaging script ends here...")
