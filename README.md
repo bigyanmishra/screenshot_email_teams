@@ -5,13 +5,12 @@ While we have been sending automated emails with PDF export(s) of our BI dashboa
 There are many such BI apps & biz use-cases with similar requirement. But here, at one of our customer, we are limited by available features of MicroStrategy Distribution Services (preferred BI tool). 
 
 ## 2. Proposed Solution
-To help achieve this, we have written a **3 – part**, **UI-tool-and-platform-independent** Python script, which can: **1) Take screenshots (either from PDF or web)**, **2) Send an email with inline image & PDF attachment**, & **3) Send a customized message on MSFT Teams too**. This can be added to our dashboard data refresh schedule workflow.
+To help achieve this, we have written a **3 – part**, **UI-tool-and-platform-independent** Python script, which can: **1) Take screenshots (either from PDF or web)**, **2) Send an email with inline/embedded image & PDF attachment**, & **3) Send a customized message on MSFT Teams too**. This can be added to our dashboard data refresh schedule workflow.
 
 ## 3. Considerations
-1. Script was run on our local environments (as of FEB - 08 - 2021) & we need to test if this can be executed on our customer's servers
-1. With no access to customer's SMTP server details, we are currently routing emails via a *secured* Amazon’s Simple Email Service (SES) - SMTP
-   1. MSTR Admins can help update this
-1.	Email rendering on mobile devices needs some more configs :neutral_face:
+1. We are currently routing emails via a *secured* Amazon’s Simple Email Service (SES) - SMTP
+   1. This can easily be modified with any (client) approved SMTP config details
+1.	Email rendering on mobile devices (especially, Apple Mail) needs some more configs :neutral_face:
 1. Message to MSFT – Teams require configuring an incoming webhook
 
 ## 4. Workflow
